@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { ref } from "vue";
+import Howto from "./Howto.vue";
+
 declare global {
   interface WindowEventMap {
     beforeinstallprompt: BeforeInstallPromptEvent;
   }
 }
-
-import { ref } from "vue";
 
 const serviceWorkerMessage = ref<string>("");
 const registerServiceWorker = async () => {
@@ -13,14 +14,14 @@ const registerServiceWorker = async () => {
     try {
       const registration = await navigator.serviceWorker.register("/sharer/sw.js");
       if (registration.installing) {
-        serviceWorkerMessage.value = ("Service worker installing");
+        serviceWorkerMessage.value = ("Service workerはインストール中です");
       } else if (registration.waiting) {
-        serviceWorkerMessage.value = ("Service worker installed");
+        serviceWorkerMessage.value = ("Service workerがインストールされました");
       } else if (registration.active) {
-        serviceWorkerMessage.value = ("Service worker active");
+        serviceWorkerMessage.value = ("Service workerは有効です");
       }
     } catch (error) {
-      serviceWorkerMessage.value = (`Registration failed with ${error}`);
+      serviceWorkerMessage.value = (`Service workerの登録に失敗しました: ${error}`);
     }
   }
 };
@@ -39,16 +40,16 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 const install = () => {
   if (!deferredPrompt) {
-    installPromptMessage.value = ("You cannot install PWA");
+    installPromptMessage.value = ("PWAをインストールすることができません");
     return;
   }
   showButton.value = false;
   deferredPrompt.prompt();
   deferredPrompt.userChoice.then((choiceResult) => {
     if (choiceResult.outcome === "accepted") {
-      installPromptMessage.value = ("User accepted the install prompt");
+      installPromptMessage.value = ("インストールが承認されました");
     } else {
-      installPromptMessage.value = ("User dismissed the install prompt");
+      installPromptMessage.value = ("インストールが拒否されました");
     }
     deferredPrompt = null;
   });
@@ -112,10 +113,13 @@ const hasInstalled = window.matchMedia("(display-mode: standalone)").matches;
         variant="tonal"
         class="mt-4 mx-4"
       >
-        Sharer has installed as PWA!
+        SharerはPWAとしてインストール済みです
       </v-alert>
+
+      <Howto />
+
       <v-img
-        src="/ios/256.png"
+        src="./ios/256.png"
         aspect-ratio="1"
         height="128"
       />
