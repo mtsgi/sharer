@@ -11,7 +11,7 @@ const serviceWorkerMessage = ref<string>("");
 const registerServiceWorker = async () => {
   if ("serviceWorker" in navigator) {
     try {
-      const registration = await navigator.serviceWorker.register("/sw.js");
+      const registration = await navigator.serviceWorker.register("/sharer/sw.js");
       if (registration.installing) {
         serviceWorkerMessage.value = ("Service worker installing");
       } else if (registration.waiting) {

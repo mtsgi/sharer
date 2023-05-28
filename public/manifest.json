@@ -6,7 +6,7 @@
   "display": "standalone",
   "description": "Web Share Target => Web Share API",
   "share_target": {
-    "action": "share",
+    "action": ".",
     "method": "GET",
     "params": {
       "title": "title",
