@@ -4,56 +4,60 @@ const title = searchParams.get("title");
 const text = searchParams.get("text");
 const url = searchParams.get("url");
 
-const share = () => {
+const asList = ["text", "title", "url"];
+const infoMap = new Map<string, string | null>([
+  ["Title", title],
+  ["Text", text],
+  ["URL", url],
+  ["Search Params", searchParams.toString()]
+]);
+
+const share = (as: string) => {
   const result = [title, text, url].join(" ");
-  navigator.share({ text: result });
+  navigator.share({ [as]: result });
 };
 </script>
 
 <template>
   <v-card
     variant="flat"
-    class="pa-4"
+    class="px-4"
   >
     <v-btn
+      v-for="as in asList"
+      :key="`share-as-${as}`"
       prepend-icon="mdi-share-variant"
-      variant="outlined"
+      color="success"
       size="large"
+      variant="tonal"
       block
-      @click="share"
+      class="mt-4"
+      @click="share(as)"
     >
-      Share as "text"
+      Share as "{{ as }}"
     </v-btn>
+  </v-card>
 
+  <v-card variant="flat">
     <v-list lines="three">
-      <v-list-item>
-        <v-list-item-title>Title</v-list-item-title>
-        <v-list-item-subtitle>
-          {{ title || '---' }}
-        </v-list-item-subtitle>
-      </v-list-item>
-
-      <v-list-item>
-        <v-list-item-title>Text</v-list-item-title>
-        <v-list-item-subtitle>
-          {{ text || '---' }}
-        </v-list-item-subtitle>
-      </v-list-item>
-
-      <v-list-item>
-        <v-list-item-title>URL</v-list-item-title>
-        <v-list-item-subtitle>
-          {{ url || '---' }}
-        </v-list-item-subtitle>
-      </v-list-item>
-
-      <v-list-item>
-        <v-list-item-title>Search Params</v-list-item-title>
-        <v-list-item-subtitle>
-          {{ searchParams || '---' }}
+      <v-list-item
+        v-for="[key, value] in infoMap"
+        :key="`info-${key}`"
+      >
+        <v-list-item-title>
+          {{ key }}
+        </v-list-item-title>
+        <v-list-item-subtitle class="mt-2">
+          {{ value || '---' }}
         </v-list-item-subtitle>
       </v-list-item>
     </v-list>
+
+    <v-img
+      src="/ios/256.png"
+      aspect-ratio="1"
+      height="128"
+    />
   </v-card>
 </template>
 

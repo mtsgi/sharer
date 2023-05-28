@@ -39,20 +39,22 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 const install = () => {
   if (!deferredPrompt) {
-    installPromptMessage.value = ("インストール可能ではありません。");
+    installPromptMessage.value = ("You cannot install PWA");
     return;
   }
   showButton.value = false;
   deferredPrompt.prompt();
   deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === "accepted") {
-        installPromptMessage.value = ("ユーザーが A2HS プロンプトを受け入れました。");
-      } else {
-        installPromptMessage.value = ("ユーザーは A2HS のプロンプトを拒否しました。");
-      }
-      deferredPrompt = null;
-    });
-  };
+    if (choiceResult.outcome === "accepted") {
+      installPromptMessage.value = ("User accepted the install prompt");
+    } else {
+      installPromptMessage.value = ("User dismissed the install prompt");
+    }
+    deferredPrompt = null;
+  });
+};
+
+const hasInstalled = window.matchMedia("(display-mode: standalone)").matches;
 </script>
 
 <template>
@@ -64,6 +66,13 @@ const install = () => {
         </v-app-bar-nav-icon>
       </template>
       <v-app-bar-title>Sharer</v-app-bar-title>
+      <template #append>
+        <v-btn
+          href="https://github.com/mtsgi/sharer"
+          target="_blank"
+          icon="mdi-github"
+        />
+      </template>
     </v-app-bar>
 
     <v-main>
@@ -96,6 +105,14 @@ const install = () => {
         class="mt-4 mx-4"
       >
         {{ installPromptMessage }}
+      </v-alert>
+      <v-alert
+        v-show="hasInstalled"
+        type="success"
+        variant="tonal"
+        class="mt-4 mx-4"
+      >
+        Sharer has installed as PWA!
       </v-alert>
       <v-img
         src="/ios/256.png"
