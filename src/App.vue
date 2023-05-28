@@ -9,13 +9,10 @@ const url = searchParams.get("urkl");
 </script>
 
 <template>
-  <main>
-    {{ searchParams }}
-
+  <v-app>
     <Home v-if="!title && !text && !url" />
-
     <Share v-else />
-  </main>
+  </v-app>
 </template>
 
 <style scoped></style>

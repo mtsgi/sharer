@@ -11,21 +11,50 @@ const share = () => {
 </script>
 
 <template>
-  <p>
-    <button @click="share">
+  <v-card
+    variant="flat"
+    class="pa-4"
+  >
+    <v-btn
+      prepend-icon="mdi-share-variant"
+      variant="outlined"
+      size="large"
+      block
+      @click="share"
+    >
       Share as "text"
-    </button>
-  </p>
-  <div>
-    <strong>Title</strong>
-    <div>{{ title || '---' }}</div>
-    <strong>Text</strong>
-    <div>{{ text || '---' }}</div>
-    <strong>Url</strong>
-    <div>{{ url || '---' }}</div>
-    <strong>searchParams</strong>
-    <div>{{ searchParams }}</div>
-  </div>
+    </v-btn>
+
+    <v-list lines="three">
+      <v-list-item>
+        <v-list-item-title>Title</v-list-item-title>
+        <v-list-item-subtitle>
+          {{ title || '---' }}
+        </v-list-item-subtitle>
+      </v-list-item>
+
+      <v-list-item>
+        <v-list-item-title>Text</v-list-item-title>
+        <v-list-item-subtitle>
+          {{ text || '---' }}
+        </v-list-item-subtitle>
+      </v-list-item>
+
+      <v-list-item>
+        <v-list-item-title>URL</v-list-item-title>
+        <v-list-item-subtitle>
+          {{ url || '---' }}
+        </v-list-item-subtitle>
+      </v-list-item>
+
+      <v-list-item>
+        <v-list-item-title>Search Params</v-list-item-title>
+        <v-list-item-subtitle>
+          {{ searchParams || '---' }}
+        </v-list-item-subtitle>
+      </v-list-item>
+    </v-list>
+  </v-card>
 </template>
 
 <style scoped></style>
